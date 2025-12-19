@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>❄️ IceWing Frost Clock ❄️</title>
+
+  <!-- Icy / runic fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Orbitron&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top,
+        #e3f2fd,
+        #90caf9,
+        #0d47a1);
+      overflow: hidden;
+      font-family: "Cinzel", serif;
+    }
+
+    /* Snowflakes */
+    .snow {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: rgba(230, 245, 255, 0.9);
+      border-radius: 50%;
+      animation: fall linear infinite;
+      filter: blur(0.3px);
+    }
+
+    @keyframes fall {
+      from {
+        transform: translateY(-10vh);
+        opacity: 0;
+      }
+      10% { opacity: 1; }
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+
+    /* Clock frame */
+    .clock-wrapper {
+      position: relative;
+    }
+
+    .clock {
+      background: rgba(220, 235, 255, 0.85);
+      border: 3px solid #bbdefb;
+      border-radius: 26px;
+      padding: 45px 80px;
+      text-align: center;
+      box-shadow:
+        0 0 25px rgba(180, 220, 255, 0.9),
+        inset 0 0 20px rgba(255, 255, 255, 0.6);
+      position: relative;
+      z-index: 3;
+    }
+
+    /* Ice shards */
+    .ice {
+      position: absolute;
+      border: 3px solid transparent;
+      border-radius: 30px;
+      pointer-events: none;
+      z-index: 2;
+      animation: shimmer 5s ease-in-out infinite alternate;
+    }
+
+    .ice.top {
+      width: 110%;
+      height: 120%;
+      top: -10%;
+      left: -5%;
+      border-top: 4px solid #e3f2fd;
+    }
+
+    .ice.bottom {
+      width: 110%;
+      height: 120%;
+      bottom: -10%;
+      left: -5%;
+      border-bottom: 4px solid #90caf9;
+    }
+
+    .ice.left {
+      width: 120%;
+      height: 110%;
+      top: -5%;
+      left: -10%;
+      border-left: 4px solid #64b5f6;
+    }
+
+    .ice.right {
+      width: 120%;
+      height: 110%;
+      top: -5%;
+      right: -10%;
+      border-right: 4px solid #bbdefb;
+    }
+
+    @keyframes shimmer {
+      from {
+        transform: scale(0.99);
+        box-shadow: 0 0 8px rgba(200, 235, 255, 0.6);
+      }
+      to {
+        transform: scale(1.01);
+        box-shadow: 0 0 18px rgba(255, 255, 255, 0.9);
+      }
+    }
+
+    /* Time */
+    .time {
+      font-family: "Orbitron", monospace;
+      font-size: 66px;
+      color: #0d47a1;
+      letter-spacing: 4px;
+      text-shadow:
+        0 0 6px #bbdefb,
+        0 0 14px #90caf9;
+    }
+
+    .ampm {
+      font-size: 22px;
+      margin-top: 8px;
+      color: #1565c0;
+      letter-spacing: 3px;
+      text-shadow: 0 0 10px #bbdefb;
+    }
+
+    .subtitle {
+      margin-top: 12px;
+      font-size: 16px;
+      color: #0d47a1;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="clock-wrapper">
+    <div class="ice top"></div>
+    <div class="ice bottom"></div>
+    <div class="ice left"></div>
+    <div class="ice right"></div>
+
+    <div class="clock">
+      <div class="time" id="time">12:00:00</div>
+      <div class="ampm" id="ampm">AM</div>
+      <div class="subtitle">IceWing Approved ❄️</div>
+    </div>
+  </div>
+
+  <script>
+    // Clock (AM / PM)
+    function updateClock() {
+      const now = new Date();
+      let h = now.getHours();
+      const m = String(now.getMinutes()).padStart(2, "0");
+      const s = String(now.getSeconds()).padStart(2, "0");
+      const ampm = h >= 12 ? "PM" : "AM";
+
+      h = h % 12;
+      h = h ? h : 12;
+
+      document.getElementById("time").textContent = `${h}:${m}:${s}`;
+      document.getElementById("ampm").textContent = ampm;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Snow ❄️❄️❄️
+    const snowCount = 100;
+    for (let i = 0; i < snowCount; i++) {
+      const snow = document.createElement("div");
+      snow.className = "snow";
+      snow.style.left = Math.random() * 100 + "vw";
+      snow.style.animationDuration = (8 + Math.random() * 15) + "s";
+      snow.style.animationDelay = Math.random() * 10 + "s";
+      document.body.appendChild(snow);
+    }
+  </script>
+
+</body>
+</html>
